@@ -17,7 +17,18 @@ function LandingPage() {
     return div(
         h1("Welcome to My Site!"),
         ClickButton(),
+        a({href: "#/about"}, "About"),
     )
 }
 
-Fala.createRoot(LandingPage);
+function AboutPage() {
+    return div(
+        h1("About"),
+        p("This is a Fala example route!")
+    );
+}
+
+createRouter({
+    "/": LandingPage,
+    "/about": AboutPage,
+});

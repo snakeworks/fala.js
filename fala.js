@@ -24,14 +24,33 @@ const TAGS = [
     "wbr"
 ];
 
+for (const tag of TAGS) {
+    window[tag] = (...nodes) => Fala.createElement(tag, ...nodes);
+}
+
+window.addEventListener("hashchange", () => {
+    Fala.handleRouteChange();
+});
+
 const Fala = {
     _rootFunc: null,
     _states: {},
     _stateCursor: 0,
-
-    createRoot: (createRootFunc) => {
+    _router: null,
+    
+    changeRoot: (createRootFunc) => {
         Fala._rootFunc = createRootFunc;
         Fala.refresh();
+    },
+
+    handleRouteChange: () => {
+        let path = window.location.hash.slice(1);
+
+        if (!path) path = "/";
+
+        const route = Fala._router[path];
+
+        Fala.changeRoot(route ?? (() => h1("404 Not Found")));
     },
     
     refresh: () => {
@@ -44,7 +63,7 @@ const Fala = {
     
     createElement: (name, ...nodes) => {
         const elm = document.createElement(name);
-        
+
         for (const node of nodes) {
             let child;
 
@@ -86,10 +105,6 @@ const Fala = {
     },
 }
 
-for (const tag of TAGS) {
-    window[tag] = (...nodes) => Fala.createElement(tag, ...nodes);
-}
-
 function remember(value) {
     const id = Fala.createState(value);
     return {
@@ -100,4 +115,9 @@ function remember(value) {
             Fala.setState(id, newValue);
         }
     }
+}
+
+function createRouter(map) {
+    Fala._router = map;
+    Fala.handleRouteChange();
 }
