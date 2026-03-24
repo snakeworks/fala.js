@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Example - Fala</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>    
+    <script src="/fala.js"></script>
+    <script>
+        function Counter() {
+            const counter = remember(0);
+
+            function handleClick() {
+                counter.set(counter.get() + 1);
+            }
+
+            return div(
+                {style: "display: flex; flex-direction: column;"},
+                button({onclick: handleClick}, "Click me!"),
+                p(`Click count: ${counter.get()}`)
+            );
+        }
+
+        Fala.createRoot(Counter);
+    </script>
+</body>
+</html>

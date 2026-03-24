@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Router Example - Fala</title>
+</head>
+<body>
+    <script src="/fala.js"></script>
+    <script>
+        function LandingPage() {
+            return div(
+                h1("Welcome to the Fala Router Example!"),
+                p("Where would you like to go?"),
+                
+                div(
+                    {style: "display: flex; flex-direction: column;"},
+                    Link("/about", "About"),
+                    Link("/cat", "Cat"),
+                    Link("/page-that-doesnt-exist", "Non-existent page")
+                )
+            )
+        }
+        
+        function AboutPage() {
+            return div(
+                h1("About"),
+                p("Fala is a single file JavaScript UI library."),
+
+                div(
+                    {style: "display: flex; flex-direction: column;"},
+                    Link("/", "Home"),
+                    a({href: "https://github.com/snakeworks/fala.js/tree/main"}, "GitHub")
+                )
+            )
+        }
+
+        function CatPage() {
+            const catLink = "https://cdn.pixabay.com/photo/2016/03/28/10/05/kitten-1285341_1280.jpg";
+            return div(
+                h1("Look at this cat"),
+                img(
+                    {src: catLink, style: "width: 50%;"}
+                ),
+                p("Image from: ", a({href: "https://pixabay.com/photos/kitten-white-cat-cute-domestic-1285341/"}, "Pixabay")),
+                Link("/", "Home"),
+            )
+        }
+
+        createRouter({
+            "/": LandingPage,
+            "/about": AboutPage,
+            "/cat": CatPage,
+        });
+    </script>
+</body>
+</html>

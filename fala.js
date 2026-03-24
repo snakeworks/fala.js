@@ -38,7 +38,7 @@ const Fala = {
     _stateCursor: 0,
     _router: null,
     
-    changeRoot: (createRootFunc) => {
+    createRoot: (createRootFunc) => {
         Fala._rootFunc = createRootFunc;
         Fala.refresh();
     },
@@ -50,21 +50,21 @@ const Fala = {
 
         const route = Fala._router[path];
 
-        Fala.changeRoot(route ?? (() => h1("404 Not Found")));
+        Fala.createRoot(route ?? (() => h1("404 Not Found")));
     },
     
     refresh: () => {
         document.getElementById(FALA_ROOT_ID)?.remove();
-        Fala._stateCursor = 0;  
+        Fala._stateCursor = 0;
 
-        const r = div(Fala._rootFunc(), {id: FALA_ROOT_ID});
+        const r = div({id: FALA_ROOT_ID}, Fala._rootFunc());
         document.body.appendChild(r);
     },
     
-    createElement: (name, ...nodes) => {
+    createElement: (name, ...children) => {
         const elm = document.createElement(name);
 
-        for (const node of nodes) {
+        for (const node of children) {
             let child;
 
             if (typeof(node) === "string") {
@@ -105,8 +105,8 @@ const Fala = {
     },
 }
 
-function remember(value) {
-    const id = Fala.createState(value);
+function remember(initialValue) {
+    const id = Fala.createState(initialValue);
     return {
         get: () => {
             return Fala.getState(id);
@@ -117,11 +117,11 @@ function remember(value) {
     }
 }
 
-function createRouter(map) {
-    Fala._router = map;
+function createRouter(routeMap) {
+    Fala._router = routeMap;
     Fala.handleRouteChange();
 }
 
-function Link(to, ...nodes) {
-    return a({href: `#${to}`}, ...nodes);
+function Link(to, ...children) {
+    return a({href: `#${to}`}, ...children);
 }
