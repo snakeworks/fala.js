@@ -17,7 +17,7 @@ function LandingPage() {
     return div(
         h1("Welcome to My Site!"),
         ClickButton(),
-        a({href: "#/about"}, "About"),
+        Link("/about", "About")
     )
 }
 

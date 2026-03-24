@@ -121,3 +121,7 @@ function createRouter(map) {
     Fala._router = map;
     Fala.handleRouteChange();
 }
+
+function Link(to, ...nodes) {
+    return a({href: `#${to}`}, ...nodes);
+}
